@@ -6,6 +6,37 @@
 
 Self-calibrating synced abstract seats with callbacks and API
 
+# Usage
+
+* Add reference to `Varneon.VUdon.Seats.Runtime` assembly definition
+* Create your own class that inherits from `Varneon.VUdon.Seats.Abstract.Seat`
+* Invoke the `base.Initialize()` method once at start to initialize the base seat class
+```csharp
+using Varneon.VUdon.Seats.Abstract;
+
+namespace Varneon.VUdon.Seats.Samples
+{
+    public class MySeat : Seat
+    {
+        private void Start()
+        {
+            base.Initialize();
+        }
+    }
+}
+```
+
+### Callbacks:
+```csharp
+protected virtual void OnCalibrationStarted() { }
+
+protected virtual void OnCalibrationFinished() { }
+
+protected virtual void OnPlayerEnteredSeat(VRCPlayerApi player) { }
+
+protected virtual void OnPlayerExitedSeat(VRCPlayerApi player) { }
+```
+
 # Installation
 
 <details><summary>
