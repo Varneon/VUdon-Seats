@@ -37,6 +37,11 @@ protected virtual void OnPlayerEnteredSeat(VRCPlayerApi player) { }
 protected virtual void OnPlayerExitedSeat(VRCPlayerApi player) { }
 ```
 
+### Public API Methods:
+```csharp
+public virtual void _Eject()
+```
+
 # Installation
 
 <details><summary>
