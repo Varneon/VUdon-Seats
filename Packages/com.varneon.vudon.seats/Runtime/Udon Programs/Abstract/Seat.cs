@@ -151,6 +151,8 @@ namespace Varneon.VUdon.Seats.Abstract
                 seatEnterLocation.eulerAngles = new Vector3(0f, seatEnterLocation.eulerAngles.y, 0f);
             }
 
+            isLocalPlayerSitting = true;
+
             OnCalibrationStarted();
 
             station.UseStation(localPlayer);
@@ -158,8 +160,6 @@ namespace Varneon.VUdon.Seats.Abstract
             playerId = localPlayerId;
 
             RequestSerialization();
-
-            isLocalPlayerSitting = true;
 
             if (vrEnabled)
             {
