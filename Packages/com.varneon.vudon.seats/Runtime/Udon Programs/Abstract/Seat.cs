@@ -34,6 +34,12 @@ namespace Varneon.VUdon.Seats.Abstract
         /// </summary>
         [SerializeField]
         private Transform hipsCalibrationPoint;
+
+        /// <summary>
+        /// Runtime manager for all seats in the scene
+        /// </summary>
+        [SerializeField, HideInInspector]
+        private SeatRuntimeManager runtimeManager;
         #endregion
 
         #region Synced Variables
@@ -114,6 +120,16 @@ namespace Varneon.VUdon.Seats.Abstract
         /// [0]: Z-axis, [1]: Y-axis
         /// </remarks>
         private sbyte[] localSeatPosition = new sbyte[2];
+
+        /// <summary>
+        /// Last known player id on last deserialization
+        /// </summary>
+        private int lastPlayerId;
+
+        /// <summary>
+        /// Is a SeatRuntimeManager currently linked to this seat
+        /// </summary>
+        private bool hasRuntimeManagerLinked;
         #endregion
 
         /// <summary>
@@ -130,6 +146,8 @@ namespace Varneon.VUdon.Seats.Abstract
             seatEnterLocation = station.stationEnterPlayerLocation;
 
             originalAngle = seatEnterLocation.localRotation;
+
+            hasRuntimeManagerLinked = runtimeManager;
         }
 
         public override void Interact()
@@ -250,12 +268,41 @@ namespace Varneon.VUdon.Seats.Abstract
 
         public override void OnDeserialization()
         {
+            if(hasRuntimeManagerLinked && lastPlayerId != playerId)
+            {
+                if(playerId > 0)
+                {
+                    VRCPlayerApi player = VRCPlayerApi.GetPlayerById(playerId);
+
+                    if(player != null)
+                    {
+                        runtimeManager.OnPlayerEnteredSeat(player, this);
+                    }
+                }
+                else
+                {
+                    VRCPlayerApi player = VRCPlayerApi.GetPlayerById(lastPlayerId);
+
+                    if (player != null)
+                    {
+                        runtimeManager.OnPlayerExitedSeat(player, this);
+                    }
+                }
+
+                lastPlayerId = playerId;
+            }
+
             AdjustSeatOnRemote();
         }
 
         public override void OnStationEntered(VRCPlayerApi player)
         {
             OnPlayerEnteredSeat(player);
+
+            if (hasRuntimeManagerLinked && player.isLocal)
+            {
+                runtimeManager.OnPlayerEnteredSeat(player, this);
+            }
         }
 
         public override void OnStationExited(VRCPlayerApi player)
@@ -269,6 +316,8 @@ namespace Varneon.VUdon.Seats.Abstract
                 RequestSerialization();
 
                 isLocalPlayerSitting = false;
+
+                if (hasRuntimeManagerLinked) { runtimeManager.OnPlayerExitedSeat(player, this); }
             }
         }
 
