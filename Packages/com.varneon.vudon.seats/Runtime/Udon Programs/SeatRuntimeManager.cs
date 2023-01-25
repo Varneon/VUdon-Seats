@@ -6,7 +6,6 @@ using VRC.Udon.Common;
 
 namespace Varneon.VUdon.Seats
 {
-    [AddComponentMenu("")] // This component is automatically added by scene postprocessor
     [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
     public class SeatRuntimeManager : UdonSharpBehaviour
     {
