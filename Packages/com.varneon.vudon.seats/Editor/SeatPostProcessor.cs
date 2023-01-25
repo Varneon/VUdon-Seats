@@ -18,11 +18,9 @@ namespace Varneon.VUdon.Seats.Editor
 
             if (runtimeManager == null)
             {
-                if(eventReceivers.Length > 0)
-                {
-                    runtimeManager = new GameObject(nameof(SeatRuntimeManager)).AddUdonSharpComponent<SeatRuntimeManager>();
-                }
-                else { return; }
+                runtimeManager = new GameObject(nameof(SeatRuntimeManager)).AddUdonSharpComponent<SeatRuntimeManager>();
+
+                if (eventReceivers.Length == 0) { return; }
             }
 
             Seat[] seats = UnityEngine.Object.FindObjectsOfType<Seat>();

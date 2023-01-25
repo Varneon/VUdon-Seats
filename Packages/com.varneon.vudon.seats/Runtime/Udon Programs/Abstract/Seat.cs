@@ -219,16 +219,7 @@ namespace Varneon.VUdon.Seats.Abstract
 
             OnCalibrationFinished();
 
-            SyncPosition();
-        }
-
-        private void SyncPosition()
-        {
-            Vector3 localSeatPos = seatEnterLocation.localPosition;
-
-            localSeatPosition = new sbyte[] { (sbyte)Mathf.Clamp(Mathf.RoundToInt(localSeatPos.z * 100f), sbyte.MinValue, sbyte.MaxValue), (sbyte)Mathf.Clamp(Mathf.RoundToInt(localSeatPos.y * 100f), sbyte.MinValue, sbyte.MaxValue) };
-
-            RequestSerialization();
+            _SyncPosition();
         }
 
         private void AdjustSeatOnRemote()
@@ -325,12 +316,54 @@ namespace Varneon.VUdon.Seats.Abstract
 
         #region Public Methods
 
+        public void _SyncPosition()
+        {
+            Vector3 localSeatPos = seatEnterLocation.localPosition;
+
+            localSeatPosition = new sbyte[] { (sbyte)Mathf.Clamp(Mathf.RoundToInt(localSeatPos.z * 100f), sbyte.MinValue, sbyte.MaxValue), (sbyte)Mathf.Clamp(Mathf.RoundToInt(localSeatPos.y * 100f), sbyte.MinValue, sbyte.MaxValue) };
+
+            RequestSerialization();
+        }
+
         /// <summary>
         /// Ejects the local player out of the seat
         /// </summary>
         public virtual void _Eject()
         {
             station.ExitStation(localPlayer);
+        }
+
+        public void _TranslateSeatPosition(Vector3 positionDelta)
+        {
+            seatEnterLocation.Translate(positionDelta);
+        }
+
+        public Vector2 _GetSeatPosition()
+        {
+            Vector3 localSeatPos = seatEnterLocation.localPosition;
+
+            return new Vector2(localSeatPos.z, localSeatPos.y);
+        }
+
+        public void _SetSeatYPosition(float yPosition)
+        {
+            Vector3 localSeatPos = seatEnterLocation.localPosition;
+
+            seatEnterLocation.localPosition = new Vector3(0f, yPosition, localSeatPos.z);
+        }
+        
+        public void _SetSeatZPosition(float zPosition)
+        {
+            Vector3 localSeatPos = seatEnterLocation.localPosition;
+
+            seatEnterLocation.localPosition = new Vector3(0f, localSeatPos.y, zPosition);
+        }
+
+        public void _EndManualCalibration()
+        {
+            OnCalibrationFinished();
+
+            _SyncPosition();
         }
 
         #endregion // Public Methods
