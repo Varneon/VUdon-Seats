@@ -19,6 +19,8 @@ namespace Varneon.VUdon.Seats.Editor
             {
                 runtimeManager = new GameObject(nameof(SeatRuntimeManager)).AddUdonSharpComponent<SeatRuntimeManager>();
 
+                UdonSharpEditorUtility.GetBackingUdonBehaviour(runtimeManager).SyncMethod = VRC.SDKBase.Networking.SyncType.None;
+
                 if (eventReceivers.Length == 0) { return; }
             }
 

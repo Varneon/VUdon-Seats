@@ -3,7 +3,8 @@
     "references": [
         "Varneon.VUdon.Seats.Runtime",
         "UdonSharp.Editor",
-        "UdonSharp.Runtime"
+        "UdonSharp.Runtime",
+        "VRC.Udon"
     ],
     "includePlatforms": [
         "Editor"
