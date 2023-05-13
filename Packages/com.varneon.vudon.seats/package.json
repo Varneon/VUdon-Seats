@@ -11,6 +11,7 @@
   },
   "resolutionStrategy": "highestMinor",
   "dependencies": {
+    "com.vrchat.udonsharp": "1.1.6"
   },
   "vpmDependencies": {
     "com.vrchat.udonsharp": "1.x.x"
