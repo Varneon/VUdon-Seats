@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection;
 using UdonSharpEditor;
 using UnityEditor.Callbacks;
 using UnityEngine;
@@ -27,20 +26,14 @@ namespace Varneon.VUdon.Seats.Editor
 
             Type seatRuntimeManagerType = typeof(SeatRuntimeManager);
 
-            FieldInfo runtimeManagerField = typeof(Seat).GetField("runtimeManager", BindingFlags.Instance | BindingFlags.NonPublic);
-
             foreach(Seat seat in seats)
             {
-                runtimeManagerField.SetValue(seat, runtimeManager);
+                seat.runtimeManager = runtimeManager;
             }
 
-            FieldInfo seatsField = seatRuntimeManagerType.GetField("seats", BindingFlags.Instance | BindingFlags.NonPublic);
+            runtimeManager.seats = seats;
 
-            seatsField.SetValue(runtimeManager, seats);
-
-            FieldInfo eventReceiversField = seatRuntimeManagerType.GetField("eventReceivers", BindingFlags.Instance | BindingFlags.NonPublic);
-
-            eventReceiversField.SetValue(runtimeManager, eventReceivers);
+            runtimeManager.eventReceivers = eventReceivers;
         }
     }
 }
