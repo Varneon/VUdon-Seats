@@ -11,9 +11,11 @@
   },
   "resolutionStrategy": "highestMinor",
   "dependencies": {
-    "com.vrchat.udonsharp": "1.1.6"
+    "com.vrchat.udonsharp": "1.1.6",
+    "com.varneon.vudon.player-scale-utility": "0.1.0"
   },
   "vpmDependencies": {
-    "com.vrchat.udonsharp": "1.x.x"
+    "com.vrchat.udonsharp": "1.x.x",
+    "com.varneon.vudon.player-scale-utility": ">=0.1.0"
   }
 }
