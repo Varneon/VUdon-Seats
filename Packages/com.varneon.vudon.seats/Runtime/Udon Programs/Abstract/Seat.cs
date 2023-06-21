@@ -22,6 +22,13 @@ namespace Varneon.VUdon.Seats.Abstract
         private SeatCalibrationMethod calibrationMethod;
 
         /// <summary>
+        /// Should the calibration be preserved until the local player's avatar changes
+        /// </summary>
+        [SerializeField]
+        [Tooltip("Preserve seat calibration until the avatar changes")]
+        private bool preserveCalibration = true;
+
+        /// <summary>
         /// Reference transform for aligning the player's head
         /// </summary>
         [Space]
@@ -130,6 +137,16 @@ namespace Varneon.VUdon.Seats.Abstract
         /// Is a SeatRuntimeManager currently linked to this seat
         /// </summary>
         private bool hasRuntimeManagerLinked;
+
+        /// <summary>
+        /// Should the seat calibrate the next time player sits
+        /// </summary>
+        private bool shouldCalibrate = true;
+
+        /// <summary>
+        /// Previous cached calibrated position
+        /// </summary>
+        private Vector3 cachedCalibratedPosition;
         #endregion
 
         /// <summary>
@@ -203,9 +220,20 @@ namespace Varneon.VUdon.Seats.Abstract
             switch (calibrationMethod)
             {
                 case SeatCalibrationMethod.Head:
-                    Vector3 headPos = localPlayer.GetTrackingData(VRCPlayerApi.TrackingDataType.Head).position;
+                    if (shouldCalibrate)
+                    {
+                        Vector3 headPos = localPlayer.GetTrackingData(VRCPlayerApi.TrackingDataType.Head).position;
 
-                    seatEnterLocation.Translate(Vector3.Scale(seatEnterLocation.InverseTransformVector(headCalibrationPoint.position - headPos) + offset, new Vector3(0f, 1f, 1f)), Space.Self);
+                        seatEnterLocation.Translate(Vector3.Scale(seatEnterLocation.InverseTransformVector(headCalibrationPoint.position - headPos) + offset, new Vector3(0f, 1f, 1f)), Space.Self);
+
+                        cachedCalibratedPosition = seatEnterLocation.localPosition;
+
+                        if (preserveCalibration) { shouldCalibrate = false; }
+                    }
+                    else
+                    {
+                        seatEnterLocation.localPosition = cachedCalibratedPosition;
+                    }
                     break;
                 case SeatCalibrationMethod.Hips:
                     Vector3 hipsPos = localPlayer.GetBonePosition(HumanBodyBones.Hips);
@@ -213,7 +241,18 @@ namespace Varneon.VUdon.Seats.Abstract
                     // If hip bone doesn't exist, we can't calibrate based on it
                     if (hipsPos == Vector3.zero) { break; }
 
-                    seatEnterLocation.Translate(Vector3.Scale(seatEnterLocation.InverseTransformVector(hipsCalibrationPoint.position - hipsPos), new Vector3(0f, 1f, 1f)), Space.Self);
+                    if (shouldCalibrate)
+                    {
+                        seatEnterLocation.Translate(Vector3.Scale(seatEnterLocation.InverseTransformVector(hipsCalibrationPoint.position - hipsPos), new Vector3(0f, 1f, 1f)), Space.Self);
+
+                        cachedCalibratedPosition = seatEnterLocation.localPosition;
+
+                        if (preserveCalibration) { shouldCalibrate = false; }
+                    }
+                    else
+                    {
+                        seatEnterLocation.localPosition = cachedCalibratedPosition;
+                    }
                     break;
             }
 
@@ -336,6 +375,8 @@ namespace Varneon.VUdon.Seats.Abstract
         public void _TranslateSeatPosition(Vector3 positionDelta)
         {
             seatEnterLocation.Translate(positionDelta);
+
+            cachedCalibratedPosition = seatEnterLocation.localPosition;
         }
 
         public Vector2 _GetSeatPosition()
@@ -347,16 +388,16 @@ namespace Varneon.VUdon.Seats.Abstract
 
         public void _SetSeatYPosition(float yPosition)
         {
-            Vector3 localSeatPos = seatEnterLocation.localPosition;
+            cachedCalibratedPosition.y = yPosition;
 
-            seatEnterLocation.localPosition = new Vector3(0f, yPosition, localSeatPos.z);
+            seatEnterLocation.localPosition = cachedCalibratedPosition;
         }
         
         public void _SetSeatZPosition(float zPosition)
         {
-            Vector3 localSeatPos = seatEnterLocation.localPosition;
+            cachedCalibratedPosition.z = zPosition;
 
-            seatEnterLocation.localPosition = new Vector3(0f, localSeatPos.y, zPosition);
+            seatEnterLocation.localPosition = cachedCalibratedPosition;
         }
 
         public void _EndManualCalibration()
@@ -364,6 +405,13 @@ namespace Varneon.VUdon.Seats.Abstract
             OnCalibrationFinished();
 
             _SyncPosition();
+        }
+
+        public void _ResetPreservedCalibration()
+        {
+            shouldCalibrate = true;
+
+            _CalibrateSeatPosition();
         }
 
         #endregion // Public Methods

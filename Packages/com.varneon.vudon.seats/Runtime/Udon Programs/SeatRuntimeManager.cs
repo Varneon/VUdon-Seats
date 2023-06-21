@@ -7,7 +7,7 @@ using VRC.Udon.Common;
 namespace Varneon.VUdon.Seats
 {
     [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
-    public class SeatRuntimeManager : UdonSharpBehaviour
+    public class SeatRuntimeManager : PlayerScaleUtility.Abstract.PlayerScaleCallbackReceiver
     {
         [SerializeField, HideInInspector]
         internal Seat[] seats;
@@ -176,6 +176,16 @@ namespace Varneon.VUdon.Seats
             if (activeSeat)
             {
                 activeSeat._Eject();
+            }
+        }
+
+        public override void OnPlayerScaleChanged(float newPlayerScale)
+        {
+            foreach(Seat seat in seats)
+            {
+                if(seat == null) { continue; }
+
+                seat._ResetPreservedCalibration();
             }
         }
     }
