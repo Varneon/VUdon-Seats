@@ -4,7 +4,8 @@
         "Varneon.VUdon.Seats.Runtime",
         "UdonSharp.Editor",
         "UdonSharp.Runtime",
-        "VRC.Udon"
+        "VRC.Udon",
+        "Varneon.VUdon.PlayerScaleUtility.Runtime"
     ],
     "includePlatforms": [
         "Editor"
