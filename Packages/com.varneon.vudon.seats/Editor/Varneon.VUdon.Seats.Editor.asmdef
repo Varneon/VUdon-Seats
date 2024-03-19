@@ -1,6 +1,10 @@
 {
     "name": "Varneon.VUdon.Seats.Editor",
-    "references": [],
+    "references": [
+        "Varneon.VUdon.Seats.Runtime",
+        "UdonSharp.Editor",
+        "UdonSharp.Runtime"
+    ],
     "includePlatforms": [
         "Editor"
     ],
