@@ -69,7 +69,7 @@ namespace Varneon.VUdon.Seats.Editor
         /// <returns>First found components of type</returns>
         private static T FindSceneComponentOfType<T>(GameObject[] roots) where T : Component
         {
-            return roots.Select(r => r.GetComponentInChildren<T>(true)).FirstOrDefault();
+            return roots.Select(r => r.GetComponentInChildren<T>(true)).FirstOrDefault(c => c != null);
         }
     }
 }

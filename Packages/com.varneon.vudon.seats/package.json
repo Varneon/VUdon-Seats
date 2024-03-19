@@ -1,7 +1,7 @@
 {
   "name": "com.varneon.vudon.seats",
   "displayName": "VUdon - Seats",
-  "version": "0.1.1-alpha.2",
+  "version": "0.2.0-alpha.1",
   "unity": "2019.4",
   "unityRelease": "29f1",
   "description": "Self-calibrating synced abstract seats with callbacks and API",
@@ -11,9 +11,11 @@
   },
   "resolutionStrategy": "highestMinor",
   "dependencies": {
-    "com.vrchat.udonsharp": "1.1.6"
+    "com.vrchat.udonsharp": "1.1.6",
+    "com.varneon.vudon.player-scale-utility": "0.1.0"
   },
   "vpmDependencies": {
-    "com.vrchat.udonsharp": "1.x.x"
+    "com.vrchat.udonsharp": "1.x.x",
+    "com.varneon.vudon.player-scale-utility": ">=0.1.0"
   }
 }
