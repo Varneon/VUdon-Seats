@@ -10,10 +10,10 @@ namespace Varneon.VUdon.Seats
     public class SeatRuntimeManager : UdonSharpBehaviour
     {
         [SerializeField, HideInInspector]
-        private Seat[] seats;
+        internal Seat[] seats;
 
         [SerializeField, HideInInspector]
-        private SeatEventReceiver[] eventReceivers;
+        internal SeatEventReceiver[] eventReceivers;
 
         private Seat activeSeat;
 

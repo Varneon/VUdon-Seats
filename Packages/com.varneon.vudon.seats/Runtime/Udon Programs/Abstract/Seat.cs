@@ -39,7 +39,7 @@ namespace Varneon.VUdon.Seats.Abstract
         /// Runtime manager for all seats in the scene
         /// </summary>
         [SerializeField, HideInInspector]
-        private SeatRuntimeManager runtimeManager;
+        internal SeatRuntimeManager runtimeManager;
         #endregion
 
         #region Synced Variables
