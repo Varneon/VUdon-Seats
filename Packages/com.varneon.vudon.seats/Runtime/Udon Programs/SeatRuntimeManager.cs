@@ -7,7 +7,7 @@ using VRC.Udon.Common;
 namespace Varneon.VUdon.Seats
 {
     [UdonBehaviourSyncMode(BehaviourSyncMode.None)]
-    public class SeatRuntimeManager : PlayerScaleUtility.Abstract.PlayerScaleCallbackReceiver
+    public class SeatRuntimeManager : UdonSharpBehaviour
     {
         [SerializeField, HideInInspector]
         internal Seat[] seats;
@@ -179,11 +179,11 @@ namespace Varneon.VUdon.Seats
             }
         }
 
-        public override void OnPlayerScaleChanged(float newPlayerScale)
+        public override void OnAvatarEyeHeightChanged(VRCPlayerApi player, float prevEyeHeightAsMeters)
         {
-            foreach(Seat seat in seats)
+            foreach (Seat seat in seats)
             {
-                if(seat == null) { continue; }
+                if (seat == null) { continue; }
 
                 seat._ResetPreservedCalibration();
             }
