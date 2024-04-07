@@ -2,8 +2,7 @@
     "name": "Varneon.VUdon.Seats.Runtime",
     "references": [
         "UdonSharp.Runtime",
-        "VRC.Udon",
-        "Varneon.VUdon.PlayerScaleUtility.Runtime"
+        "VRC.Udon"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
