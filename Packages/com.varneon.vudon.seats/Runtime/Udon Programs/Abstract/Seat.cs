@@ -298,7 +298,9 @@ namespace Varneon.VUdon.Seats.Abstract
 
         public override void OnDeserialization()
         {
-            if(hasRuntimeManagerLinked && lastPlayerId != playerId)
+            OnDeserializationProxied();
+
+            if (hasRuntimeManagerLinked && lastPlayerId != playerId)
             {
                 if(playerId > 0)
                 {
@@ -324,6 +326,8 @@ namespace Varneon.VUdon.Seats.Abstract
 
             AdjustSeatOnRemote();
         }
+
+        protected virtual void OnDeserializationProxied() { }
 
         public override void OnStationEntered(VRCPlayerApi player)
         {
