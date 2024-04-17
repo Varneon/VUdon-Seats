@@ -3,6 +3,7 @@
 using System;
 using UdonSharp;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Varneon.VUdon.Seats.Enums;
 using VRC.SDKBase;
 using VRCStation = VRC.SDK3.Components.VRCStation;
@@ -18,29 +19,28 @@ namespace Varneon.VUdon.Seats.Abstract
         /// Method for calibrating the seat
         /// </summary>
         [Header("Settings")]
-        [SerializeField]
-        private SeatCalibrationMethod calibrationMethod;
+        [FormerlySerializedAs("calibrationMethod")]
+        public SeatCalibrationMethod CalibrationMethod;
 
         /// <summary>
         /// Should the calibration be preserved until the local player's avatar changes
         /// </summary>
-        [SerializeField]
+        [FormerlySerializedAs("preserveCalibration")]
         [Tooltip("Preserve seat calibration until the avatar changes")]
-        private bool preserveCalibration = true;
+        public bool PreserveCalibration = true;
 
         /// <summary>
         /// Reference transform for aligning the player's head
         /// </summary>
-        [Space]
         [Header("References")]
-        [SerializeField]
-        private Transform headCalibrationPoint;
+        [FormerlySerializedAs("headCalibrationPoint")]
+        public Transform HeadCalibrationPoint;
 
         /// <summary>
         /// Reference transform for aligning the player's hip bone
         /// </summary>
-        [SerializeField]
-        private Transform hipsCalibrationPoint;
+        [FormerlySerializedAs("hipsCalibrationPoint")]
+        public Transform HipsCalibrationPoint;
 
         /// <summary>
         /// Runtime manager for all seats in the scene
@@ -201,7 +201,7 @@ namespace Varneon.VUdon.Seats.Abstract
                 _ResetStationRotation();
             }
 
-            if (calibrationMethod == SeatCalibrationMethod.None) { return; }
+            if (CalibrationMethod == SeatCalibrationMethod.None) { return; }
 
             SendCustomEventDelayedSeconds(nameof(_CalibrateSeatPosition), 1f);
         }
@@ -217,18 +217,18 @@ namespace Varneon.VUdon.Seats.Abstract
 
             Vector3 offset = vrEnabled ? new Vector3(0f, -0.05f, 0.1f) : Vector3.zero;
 
-            switch (calibrationMethod)
+            switch (CalibrationMethod)
             {
                 case SeatCalibrationMethod.Head:
                     if (shouldCalibrate)
                     {
                         Vector3 headPos = localPlayer.GetTrackingData(VRCPlayerApi.TrackingDataType.Head).position;
 
-                        seatEnterLocation.Translate(Vector3.Scale(seatEnterLocation.InverseTransformVector(headCalibrationPoint.position - headPos) + offset, new Vector3(0f, 1f, 1f)), Space.Self);
+                        seatEnterLocation.Translate(Vector3.Scale(seatEnterLocation.InverseTransformVector(HeadCalibrationPoint.position - headPos) + offset, new Vector3(0f, 1f, 1f)), Space.Self);
 
                         cachedCalibratedPosition = seatEnterLocation.localPosition;
 
-                        if (preserveCalibration) { shouldCalibrate = false; }
+                        if (PreserveCalibration) { shouldCalibrate = false; }
                     }
                     else
                     {
@@ -243,11 +243,11 @@ namespace Varneon.VUdon.Seats.Abstract
 
                     if (shouldCalibrate)
                     {
-                        seatEnterLocation.Translate(Vector3.Scale(seatEnterLocation.InverseTransformVector(hipsCalibrationPoint.position - hipsPos), new Vector3(0f, 1f, 1f)), Space.Self);
+                        seatEnterLocation.Translate(Vector3.Scale(seatEnterLocation.InverseTransformVector(HipsCalibrationPoint.position - hipsPos), new Vector3(0f, 1f, 1f)), Space.Self);
 
                         cachedCalibratedPosition = seatEnterLocation.localPosition;
 
-                        if (preserveCalibration) { shouldCalibrate = false; }
+                        if (PreserveCalibration) { shouldCalibrate = false; }
                     }
                     else
                     {
