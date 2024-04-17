@@ -71,6 +71,8 @@ namespace Varneon.VUdon.Seats
         {
             if (activeSeat)
             {
+                activeSeat._ResetPreservedCalibration();
+
                 activeSeat._CalibrateSeatPosition();
             }
         }
