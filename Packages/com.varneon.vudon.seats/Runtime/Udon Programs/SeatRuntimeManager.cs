@@ -47,7 +47,10 @@ namespace Varneon.VUdon.Seats
 
             foreach (SeatEventReceiver receiver in eventReceivers)
             {
-                receiver.OnPlayerEnteredSeat(player, seat);
+                if (receiver)
+                {
+                    receiver.OnPlayerEnteredSeat(player, seat);
+                }
             }
         }
 
@@ -57,7 +60,10 @@ namespace Varneon.VUdon.Seats
 
             foreach (SeatEventReceiver receiver in eventReceivers)
             {
-                receiver.OnPlayerExitedSeat(player, seat);
+                if (receiver)
+                {
+                    receiver.OnPlayerExitedSeat(player, seat);
+                }
             }
         }
 
@@ -175,9 +181,10 @@ namespace Varneon.VUdon.Seats
         {
             foreach (Seat seat in seats)
             {
-                if (seat == null) { continue; }
-
-                seat._ResetPreservedCalibration();
+                if (seat)
+                {
+                    seat._ResetPreservedCalibration();
+                }
             }
         }
     }
