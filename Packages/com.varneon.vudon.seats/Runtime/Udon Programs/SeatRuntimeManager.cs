@@ -163,14 +163,6 @@ namespace Varneon.VUdon.Seats
             else { return Vector2.zero; }
         }
 
-        public override void InputUse(bool value, UdonInputEventArgs args)
-        {
-            if (manualCalibrationActive)
-            {
-                EndManualCalibration();
-            }
-        }
-
         public void EjectFromActiveSeat()
         {
             if (activeSeat)
