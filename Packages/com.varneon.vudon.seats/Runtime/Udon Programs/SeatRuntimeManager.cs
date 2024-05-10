@@ -181,11 +181,14 @@ namespace Varneon.VUdon.Seats
 
         public override void OnAvatarEyeHeightChanged(VRCPlayerApi player, float prevEyeHeightAsMeters)
         {
-            foreach (Seat seat in seats)
+            if (player.isLocal)
             {
-                if (seat)
+                foreach (Seat seat in seats)
                 {
-                    seat._ResetPreservedCalibration();
+                    if (seat)
+                    {
+                        seat._ResetPreservedCalibration();
+                    }
                 }
             }
         }
