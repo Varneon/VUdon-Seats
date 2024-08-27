@@ -345,7 +345,7 @@ namespace Varneon.VUdon.Seats.Abstract
 
             if (player.isLocal)
             {
-                playerId = -1;
+                playerId = 0;
 
                 RequestSerialization();
 
