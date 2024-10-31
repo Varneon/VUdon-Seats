@@ -131,7 +131,7 @@ namespace Varneon.VUdon.Seats
         {
             if (manualCalibrationActive && activeSeat)
             {
-                float deltaTime = Time.deltaTime;
+                float deltaTime = Time.deltaTime / 4f;
 
                 activeSeat._TranslateSeatPosition(new Vector3(
                     0f,
